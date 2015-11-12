@@ -5,7 +5,7 @@
  *
  * Class ControllerController
  */
-class ControllerController
+abstract class ControllerController
 {
     /**
      * Заголовок страницы по умолчанию.
@@ -132,4 +132,5 @@ class ControllerController
         }
     }
 
+    public abstract function actionIndex();
 }
