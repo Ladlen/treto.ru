@@ -22,5 +22,15 @@ class SiteController extends ControllerController
         $this->render('index');
     }
 
-
+    public function action404()
+    {
+        if (AjaxHelper::whetherAjaxQuery())
+        {
+            AjaxHelper::sendErrorMessages(_('Ошибка 404'));
+        }
+        else
+        {
+            $this->render('404');
+        }
+    }
 }
