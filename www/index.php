@@ -63,13 +63,13 @@ catch (Exception $e)
         $msg = _('Ошибка на сервере');
     }
 
-    if (empty($_REQUEST['ajax']))
+    if (AjaxHelper::whetherAjaxQuery())
     {
-        die($msg);
+        AjaxHelper::sendErrorMessages($msg);
     }
     else
     {
-        die(json_encode(['success' => false, 'messages' => [$msg]]));
+        die($msg);
     }
 }
 
