@@ -16,14 +16,9 @@ class ImagesController extends ControllerController
     public function actionRetrieve()
     {
         $file = isset($_REQUEST['file']) ? trim($_REQUEST['file']) : false;
-
         $model = new ImagesModel($this->config);
-
-        $model->getImagesParameters($file);
-
-        $res = ['success' => false, "messages" => ['one 1', 'some 2']];
-        echo json_encode($res);
-        exit;
+        $imagesParameters = $model->getImagesParameters($file);
+        AjaxHelper::sendResult($imagesParameters);
     }
 
     public function actionUpdate()
