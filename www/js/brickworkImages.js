@@ -1,4 +1,10 @@
 $(function () {
+
+    $("#upload_file").click(function(){
+        alert($("#uploaded_file").val());
+        return false;
+    });
+
     var imageHeight = 200;  // px
     var imageDistance = 2;  // px - расстояние по краям изображений
 
@@ -73,7 +79,7 @@ $(function () {
                 result.newImagesParameters.push({
                     "width" : newWidth,
                     "height" : imageHeight,
-                    "left" : -(),
+                    "left" : -10,
                     "top" : -(newHeight / 2)
                 });
                 result.totalAreaWaste += newWidth * (newHeight - imageHeight);
@@ -106,25 +112,10 @@ $(function () {
                         "top": top
                     }
                 );
-            }
+            });
             result.totalAreaWaste = 0;
         }
 
         return result;
     }
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "/images/retrieve",
-        success: function (data) {
-            if (data.success) {
-
-            }
-            else {
-                var msg = 'Ошибка запроса:\n' + data.messages.join('\n');
-                alert(msg);
-            }
-        }
-    });
 });

@@ -6,7 +6,7 @@
         var imageDistance = 2;  // px - расстояние по краям изображений
     }
 
-    $(function () {
+    /*$(function () {
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -21,5 +21,7 @@
                 }
             }
         });
-    });
+    });*/
 </script>
+
+<div id="content"</div>

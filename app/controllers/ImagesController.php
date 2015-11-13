@@ -21,8 +21,9 @@ class ImagesController extends ControllerController
         AjaxHelper::sendResult($imagesParameters);
     }
 
-    public function action()
+    public function actionAddFile()
     {
+        die('sdfdsffd');
     }
 
 }
