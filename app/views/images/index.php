@@ -58,9 +58,6 @@
             var result = {"newImagesParameters" : [], "totalAreaWaste" : 0};
 
             var totalImagesWidth = 0;   // ширина изображений в необрезанном виде
-            //for (var info in images) {
-            //    totalImagesWidth += widthByHeight(info.width, info.height, imageHeight);
-            //}
 
             $.map(images, function(val) {
                 totalImagesWidth += widthByHeight(info.width, info.height, imageHeight);
@@ -70,42 +67,57 @@
 
             if (ratio > 1) {
                 // обрезка справа/слева
-
+                result.totalAreaWaste = 0;
+                $.map(images, function(info) {
+                    var newWidth = widthByHeight(info.width, info.height, imageHeight) / ratio;
+                    var newHeight = heightByWidth(info.width, info.height, newWidth);
+                    result.newImagesParameters.push({
+                        "width" : newWidth,
+                        "height" : imageHeight,
+                        "left" : -(),
+                        "top" : -(newHeight / 2)
+                    });
+                    result.totalAreaWaste += newWidth * (newHeight - imageHeight);
+                });
             } else if (ratio < 1) {
                 // обрезка сверху/снизу
-                $.map(images, function(val) {
-                    var width = widthByHeight(info.width, info.height, imageHeight) / ratio;
-                    heightByWidth()
+                result.totalAreaWaste = 0;
+                $.map(images, function(info) {
+                    var newWidth = widthByHeight(info.width, info.height, imageHeight) / ratio;
+                    var newHeight = heightByWidth(info.width, info.height, newWidth);
                     result.newImagesParameters.push({
-                        "width" : width,
-                        "height" : imageHeight,
-                        "left" : left,
-                        "top" : top
+                        "path": info.path,
+                        "width": newWidth,
+                        "height": imageHeight,
+                        "left": 0,
+                        "top": -(newHeight / 2)
                     });
+                    result.totalAreaWaste += newWidth * (newHeight - imageHeight);
                 });
             } else {
                 // ничего не обрезаем
-                $.map(images, function(val) {
+                $.map(images, function(info) {
                     var width = widthByHeight(info.width, info.height, imageHeight);
-                    result.newImagesParameters.push({
-                        "width" : width,
-                        "height" : imageHeight,
-                        "left" : left,
-                        "top" : top
-                    });
-                });
+                    result.newImagesParameters.push(
+                        {
+                            "path": info.path,
+                            "width": width,
+                            "height": imageHeight,
+                            "left": left,
+                            "top": top
+                        }
+                    );
+                }
+                result.totalAreaWaste = 0;
             }
 
             return result;
         }
 
-
-        //var data = {"width": width, "height": height};
         $.ajax({
             type: "POST",
             dataType: "json",
             url: "/images/retrieve",
-            //data: data,
             success: function (data) {
                 if (data.success) {
 
