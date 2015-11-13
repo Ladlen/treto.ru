@@ -16,6 +16,6 @@ class LoggerComponent
 
     public function log($message)
     {
-        error_log($message, $this->config['log']['type'], $this->config['log']['destination']);
+        error_log($message . PHP_EOL . PHP_EOL, $this->config['log']['type'], $this->config['log']['destination']);
     }
 }

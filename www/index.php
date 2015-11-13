@@ -1,5 +1,15 @@
 <?php
+/*
+$path = 'http://treto.ru/img_lb/imola%20ceramica/cento%20per%20cento/per_sito/ambienti/z_Cento%20Per%20Cento-IMOLA%20CERAMICA-1.jpg#xpointer(Texture)';
 
+$info = pathinfo($path, PATHINFO_FILENAME);
+
+echo ($info) . "<br>";
+
+echo urldecode($info);
+
+exit;
+*/
 /*$noChange = ['str13', 'str12', 'str11', 'str10', 'str9', 'str8', 'str7'];
 $change = ['str1', 'str8', 'str9', 'str1', 'str2', 'str10', 'str11', 'str12', 'str1'];
 
@@ -55,7 +65,7 @@ catch (Exception $e)
         $e->getTraceAsString()
     );
 
-    (new LoggerComponent($config))->log($msg . PHP_EOL . PHP_EOL);
+    (new LoggerComponent($config))->log($msg);
 
     if (!$config['debug'])
     {
