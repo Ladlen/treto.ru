@@ -14,6 +14,10 @@ class ImagesModel
      */
     protected $defaultFile = 'data/imageLists/test.txt';
 
+    /**
+     * @param array $config
+     * @param string $elementSessionName
+     */
     public function __construct($config)
     {
         $this->config = $config;
@@ -22,16 +26,27 @@ class ImagesModel
     /**
      * Вернуть параметры всех изображений в файле $file.
      *
+     * @param string $elementSessionID уникальный ID элемента (для сессии)
      * @param bool|false $file путь к файлу
      * @param string $EOL перевод строки, используемый в файле $file
      * @return array
      * @throws Exception
      */
-    public function getImagesParameters($file = false, $EOL = PHP_EOL)
+    public function getImagesParameters($elementSessionID, $file = false, $EOL = PHP_EOL)
     {
-        $imagesParameters = [];
+        $clientImagesParameters = [];
 
-        $reader = new StringReaderComponent($this->config);
+        $reader = false;
+
+        session_start();
+        if (isset($_SESSION[$elementSessionID]) && isset($_SESSION[$elementSessionID]['reader']))
+        {
+            $reader = unserialize($_SESSION[$elementSessionID]['reader']);
+        }
+        else
+        {
+            $reader = new StringReaderComponent($this->config);
+        }
 
         $file = $file ? $file : APP_DIR . $this->defaultFile;
         $reader->addFile($file, $this->config['brickworkImages']['file']['EOL']);
@@ -40,11 +55,17 @@ class ImagesModel
         {
             if ($info = $this->getImageInfo($string))
             {
-                $imagesParameters[] = $info;
+                $clientImagesParameters[] = $info;
             }
         }
 
-        return $imagesParameters;
+        if (!isset($_SESSION[$elementSessionID]))
+        {
+            $_SESSION[$elementSessionID] = [];
+        }
+        $_SESSION[$elementSessionID]['reader'] = serialize($reader);
+
+        return $clientImagesParameters;
     }
 
     /**
@@ -62,7 +83,13 @@ class ImagesModel
         {
             $retInfo['width'] = $info[0];
             $retInfo['height'] = $info[1];
-            $retInfo['name'] = urldecode(pathinfo($imagePath, PATHINFO_FILENAME));
+            $retInfo['uid'] = md5($imagePath);
+            #$retInfo['name'] = urldecode(pathinfo($imagePath, PATHINFO_FILENAME));
+            #$retInfo['path'] = ;
+        }
+        else
+        {
+            (new LoggerComponent($this->config))->log("Файл $imagePath не найден.");
         }
 
         return $retInfo;
