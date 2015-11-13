@@ -34,7 +34,7 @@ class ImagesModel
         $reader = new StringReaderComponent($this->config);
 
         $file = $file ? $file : APP_DIR . $this->defaultFile;
-        $reader->addFile($file, $this->config['file']['EOL']);
+        $reader->addFile($file, $this->config['brickworkImages']['file']['EOL']);
 
         while ($string = $reader->getNextString())
         {
