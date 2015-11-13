@@ -14,16 +14,26 @@ abstract class ControllerController
     protected $title = '';
 
     /**
+     * JS скрипт распологается в заголовке страницы.
+     */
+    const JS_POS_HEADER = 'header';
+
+    /**
+     * JS скрипт распологается в конце страницы.
+     */
+    const JS_POS_END = 'end';
+
+    /**
      * Список путей к скриптам.
      * @var array
      */
-    private static $scripts = [];
+    private $scripts = ['header' => [], 'end' => []];
 
     /**
      * Список путей к CSS.
      * @var array
      */
-    private static $css = [];
+    private $css = [];
 
     /**
      * Данные конфигурации.
@@ -40,15 +50,16 @@ abstract class ControllerController
      * Добавить скрипт.
      *
      * @param string $path путь к скрипту
+     * @param int $location где распологается скрипт
      * @param bool|false $realpath нужно ли к $path применить функцию realpath() (для локальных путей)
      */
-    public static function addScript($path, $realpath = false)
+    public function addScript($path, $location, $realpath = false)
     {
         $path = trim($path);
         $path = $realpath ? realpath($path) : $path;
-        if (!in_array($path, self::$scripts))
+        if (!in_array($path, $this->scripts))
         {
-            self::$scripts[] = $path;
+            $this->scripts[$location][] = $path;
         }
     }
 
@@ -58,13 +69,13 @@ abstract class ControllerController
      * @param string $path путь к файлу стилей
      * @param bool|false $realpath нужно ли к $path применить функцию realpath() (для локальных путей)
      */
-    public static function addCSS($path, $realpath = false)
+    public function addCSS($path, $realpath = false)
     {
         $path = trim($path);
         $path = $realpath ? realpath($path) : $path;
-        if (!in_array($path, self::$css))
+        if (!in_array($path, $this->css))
         {
-            self::$css[] = $path;
+            $this->css[] = $path;
         }
     }
 
@@ -95,6 +106,8 @@ abstract class ControllerController
     {
         $file = $this->getViewsPath() . "$view.php";
 
+        $cssScripts = $this->getCssScriptsCode();
+        $jsScripts = $this->getJsScriptsCode();
         $content = $this->renderPhpFile($file, $params);
         require(APP_DIR . 'views/layouts/main.php');
     }
@@ -104,6 +117,30 @@ abstract class ControllerController
         $file = $this->getViewsPath() . "$view.php";
         extract($params, EXTR_OVERWRITE);
         require($file);
+    }
+
+    private function getJsScriptsCode()
+    {
+        $jsCode = ['header' => '', 'end' => ''];
+        foreach ($this->scripts['header'] as $path)
+        {
+            $jsCode['header'] .= "<script type='text/javascript' src='$path'></script>\n";
+        }
+        foreach ($this->scripts['end'] as $path)
+        {
+            $jsCode['end'] .= "<script type='text/javascript' src='$path'></script>\n";
+        }
+        return $jsCode;
+    }
+
+    private function getCssScriptsCode()
+    {
+        $cssCode = '';
+        foreach ($this->css as $path)
+        {
+            $cssCode .= "<link rel='stylesheet' type='text/css' href='$path'/>\n";
+        }
+        return $cssCode;
     }
 
     protected function getViewsPath()

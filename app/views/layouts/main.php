@@ -4,18 +4,11 @@
     <meta charset="utf-8" />
     <title><?php echo $this->htmlVar('title') ?></title>
     <link rel="stylesheet" type="text/css" href="css/index.css"/>
-    <?php
-        foreach (self::$css as $path)
-        {
-            echo "<link rel='stylesheet' type='text/css' href='$path'/>\n";
-        }
-        foreach (self::$scripts as $path)
-        {
-            echo "<script type='text/javascript' src='$path'></script>\n";
-        }
-    ?>
+    <?php echo $cssScripts ?>
+    <?php echo $jsScripts['header'] ?>
 </head>
 <body>
     <?php echo $content ?>
+    <?php echo $jsScripts['end'] ?>
 </body>
 </html>
