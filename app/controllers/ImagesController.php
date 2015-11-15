@@ -14,15 +14,17 @@ class ImagesController extends ControllerController
 
     public function actionRetrieve()
     {
-        $file = isset($_REQUEST['file']) ? trim($_REQUEST['file']) : false;
-        $model = new ImagesModel($this->config);
-        $imagesParameters = $model->getImagesParameters('commonPanel', $file);
+        #$file = isset($_REQUEST['file']) ? trim($_REQUEST['file']) : false;
+        $model = new ImagesModel($this->config, $this->config['brickworkImages']['elementSessionKey']);
+        $imagesParameters = $model->getImagesParameters($_REQUEST['count']);
         AjaxHelper::sendResult($imagesParameters);
     }
 
     public function actionAddFile()
     {
-        die('sdfdsffd');
+        $model = new ImagesModel($this->config, $this->config['brickworkImages']['elementSessionKey']);
+        $model->addFile($_FILES['file']['tmp_name'], $this->config['brickworkImages']['file']['EOL']);
+        AjaxHelper::sendResult('file added');
     }
 
 }
