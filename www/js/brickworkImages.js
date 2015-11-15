@@ -1,9 +1,21 @@
 $(function () {
 
-    $("#upload_file").click(function(){
-        alert($("#uploaded_file").val());
+    $("#upload_file").click(function () {
+        var file = $("#uploaded_file").val();
+        if (file) {
+            var data = new FormData();
+            data.append(0, file);
+        }
+        else {
+            alert("Введите изображение.");
+        }
         return false;
     });
+
+    /*var files;
+     $("#uploaded_file").change(function () {
+     files = this.files;
+     });*/
 
     var imageHeight = 200;  // px
     var imageDistance = 2;  // px - расстояние по краям изображений
@@ -60,11 +72,11 @@ $(function () {
      */
     function adjustToLine(images, width) {
 
-        var result = {"newImagesParameters" : [], "totalAreaWaste" : 0};
+        var result = {"newImagesParameters": [], "totalAreaWaste": 0};
 
         var totalImagesWidth = 0;   // ширина изображений в необрезанном виде
 
-        $.map(images, function(val) {
+        $.map(images, function (val) {
             totalImagesWidth += widthByHeight(info.width, info.height, imageHeight);
         });
 
@@ -73,21 +85,21 @@ $(function () {
         if (ratio > 1) {
             // обрезка справа/слева
             result.totalAreaWaste = 0;
-            $.map(images, function(info) {
+            $.map(images, function (info) {
                 var newWidth = widthByHeight(info.width, info.height, imageHeight) / ratio;
                 var newHeight = heightByWidth(info.width, info.height, newWidth);
                 result.newImagesParameters.push({
-                    "width" : newWidth,
-                    "height" : imageHeight,
-                    "left" : -10,
-                    "top" : -(newHeight / 2)
+                    "width": newWidth,
+                    "height": imageHeight,
+                    "left": -10,
+                    "top": -(newHeight / 2)
                 });
                 result.totalAreaWaste += newWidth * (newHeight - imageHeight);
             });
         } else if (ratio < 1) {
             // обрезка сверху/снизу
             result.totalAreaWaste = 0;
-            $.map(images, function(info) {
+            $.map(images, function (info) {
                 var newWidth = widthByHeight(info.width, info.height, imageHeight) / ratio;
                 var newHeight = heightByWidth(info.width, info.height, newWidth);
                 result.newImagesParameters.push({
@@ -101,7 +113,7 @@ $(function () {
             });
         } else {
             // ничего не обрезаем
-            $.map(images, function(info) {
+            $.map(images, function (info) {
                 var width = widthByHeight(info.width, info.height, imageHeight);
                 result.newImagesParameters.push(
                     {
