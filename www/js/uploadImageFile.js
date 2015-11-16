@@ -20,6 +20,7 @@ $(function () {
     }
 
     breakworkImages.sendFile = function (data) {
+        var that = this;
         data.append("bundleCount", this.bundleCount);
         $.ajax({
             url: '/images/addFile',
@@ -31,7 +32,7 @@ $(function () {
             contentType: false, // Так jQuery скажет серверу что это строковой запрос
             success: function (respond) {
                 if (respond.success) {
-                    this.retrieve(this.bundleCount);
+                    that.retrieve(that.bundleCount);
                 }
             },
             error: function (jqXHR, textStatus) {

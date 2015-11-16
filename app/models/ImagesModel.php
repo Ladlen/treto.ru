@@ -67,11 +67,26 @@ class ImagesModel
         $clientImagesParameters = [];
 
         $readerSess = new StringReaderSessionComponent($this->config, $this->elementSessionKey);
-        while (($count-- > 0) && ($imagePath = $readerSess->getNextString()))
+        /*while (($count-- > 0) && ($imagePath = $readerSess->getNextString()))
         {
             if ($info = $this->getImageInfo($imagePath))
             {
                 $clientImagesParameters[] = $info;
+            }
+        }*/
+        while ($count > 0)
+        {
+            if (($imagePath = $readerSess->getNextString()) !== false)
+            {
+                if ($info = $this->getImageInfo($imagePath))
+                {
+                    $clientImagesParameters[] = $info;
+                    --$count;
+                }
+            }
+            else
+            {
+                break;
             }
         }
 
@@ -88,7 +103,9 @@ class ImagesModel
     {
         $retInfo = [];
 
+        ini_set('display_errors', 0);
         $info = getimagesize($imagePath);
+        ini_set('display_errors', 1);
         if ($info)
         {
             $retInfo['width'] = $info[0];
