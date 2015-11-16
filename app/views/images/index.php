@@ -7,11 +7,6 @@
         "bundleCount" :  <?php echo $this->config['brickworkImages']['bundleCount'] ?>
     }
 
-    breakworkImages.aFunc = function () {alert("+++++++++++++++++++");};
-
-
-    breakworkImages.aFunc();
-
     /*$(function () {
         $.ajax({
             type: "POST",
