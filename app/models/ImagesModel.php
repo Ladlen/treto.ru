@@ -48,9 +48,7 @@ class ImagesModel
      * Добавить изображения из файла.
      *
      * @param string $path путь к файлу
-     * @param string $elementSessionKey сессионный ключ текущего элемента
      * @param string $EOL разделитель строк в файле
-     * @throws Exception
      */
     public function addFile($path, $EOL)
     {
@@ -59,19 +57,17 @@ class ImagesModel
     }
 
     /**
-     * Вернуть параметры всех изображений в файле $file.
+     * Вернуть параметры изображений.
      *
-     * @param bool|false $file путь к файлу
-     * @param string $EOL перевод строки, используемый в файле $file
+     * @param int $count количество изображений
      * @return array
-     * @throws Exception
      */
     public function getImagesParameters($count)
     {
         $clientImagesParameters = [];
 
-        $readerSess = new StringReaderSessionComponent($this->config);
-        while ($imagePath = $readerSess->getNextString())
+        $readerSess = new StringReaderSessionComponent($this->config, $this->elementSessionKey);
+        while (($count-- > 0) && ($imagePath = $readerSess->getNextString()))
         {
             if ($info = $this->getImageInfo($imagePath))
             {

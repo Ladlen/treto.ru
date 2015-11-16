@@ -15,7 +15,6 @@ class ImagesController extends ControllerController
 
     public function actionRetrieve()
     {
-        #$file = isset($_REQUEST['file']) ? trim($_REQUEST['file']) : false;
         $model = new ImagesModel($this->config, $this->config['brickworkImages']['elementSessionKey']);
         $imagesParameters = $model->getImagesParameters($_REQUEST['count']);
         AjaxHelper::sendResult($imagesParameters);
