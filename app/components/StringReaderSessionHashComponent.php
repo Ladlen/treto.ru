@@ -1,6 +1,6 @@
 <?php
 
-class StringReaderSessionComponent
+class StringReaderSessionHashComponent
 {
     protected $config;
 
@@ -28,7 +28,7 @@ class StringReaderSessionComponent
         }
         else
         {
-            $this->reader = new StringReaderComponent($this->config);
+            $this->reader = new StringReaderHashComponent($this->config);
         }
     }
 
