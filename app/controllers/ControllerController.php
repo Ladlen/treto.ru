@@ -27,13 +27,13 @@ abstract class ControllerController
      * Список путей к скриптам.
      * @var array
      */
-    private $scripts = ['header' => [], 'end' => []];
+    private static $scripts = ['header' => [], 'end' => []];
 
     /**
      * Список путей к CSS.
      * @var array
      */
-    private $css = [];
+    private static $css = [];
 
     /**
      * Данные конфигурации.
@@ -53,13 +53,13 @@ abstract class ControllerController
      * @param int $location где распологается скрипт
      * @param bool|false $realpath нужно ли к $path применить функцию realpath() (для локальных путей)
      */
-    public function addScript($path, $location, $realpath = false)
+    public static function addScript($path, $location, $realpath = false)
     {
         $path = trim($path);
         $path = $realpath ? realpath($path) : $path;
-        if (!in_array($path, $this->scripts))
+        if (!in_array($path, self::$scripts))
         {
-            $this->scripts[$location][] = $path;
+            self::$scripts[$location][] = $path;
         }
     }
 
@@ -69,13 +69,13 @@ abstract class ControllerController
      * @param string $path путь к файлу стилей
      * @param bool|false $realpath нужно ли к $path применить функцию realpath() (для локальных путей)
      */
-    public function addCSS($path, $realpath = false)
+    public static function addCSS($path, $realpath = false)
     {
         $path = trim($path);
         $path = $realpath ? realpath($path) : $path;
-        if (!in_array($path, $this->css))
+        if (!in_array($path, self::$css))
         {
-            $this->css[] = $path;
+            self::$css[] = $path;
         }
     }
 
@@ -106,9 +106,11 @@ abstract class ControllerController
     {
         $file = $this->getViewsPath() . "$view.php";
 
+        $content = $this->renderPhpFile($file, $params);
+
         $cssScripts = $this->getCssScriptsCode();
         $jsScripts = $this->getJsScriptsCode();
-        $content = $this->renderPhpFile($file, $params);
+
         require(APP_DIR . 'views/layouts/main.php');
     }
 
@@ -122,11 +124,11 @@ abstract class ControllerController
     private function getJsScriptsCode()
     {
         $jsCode = ['header' => '', 'end' => ''];
-        foreach ($this->scripts['header'] as $path)
+        foreach (self::$scripts['header'] as $path)
         {
             $jsCode['header'] .= "<script type='text/javascript' src='$path'></script>\n";
         }
-        foreach ($this->scripts['end'] as $path)
+        foreach (self::$scripts['end'] as $path)
         {
             $jsCode['end'] .= "<script type='text/javascript' src='$path'></script>\n";
         }
@@ -136,7 +138,7 @@ abstract class ControllerController
     private function getCssScriptsCode()
     {
         $cssCode = '';
-        foreach ($this->css as $path)
+        foreach (self::$css as $path)
         {
             $cssCode .= "<link rel='stylesheet' type='text/css' href='$path'/>\n";
         }

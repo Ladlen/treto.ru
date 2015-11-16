@@ -9,6 +9,7 @@ class ImagesController extends ControllerController
 
     public function actionIndex()
     {
+        self::addScript('/js/brickworkImages.js', self::JS_POS_END);
         $this->renderPartial('index');
     }
 
