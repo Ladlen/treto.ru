@@ -22,28 +22,6 @@ class ImagesModel
         $this->elementSessionKey = $elementSessionKey;
     }
 
-    /*protected function getReader()
-    {
-        $reader = false;
-
-        session_start();
-        if (!isset($_SESSION[$this->elementSessionKey]))
-        {
-            $_SESSION[$this->elementSessionKey] = [];
-        }
-
-        if (isset($_SESSION[$this->elementSessionKey]['reader']))
-        {
-            $reader = unserialize($_SESSION[$this->elementSessionKey]['reader']);
-        }
-        else
-        {
-            $reader = new StringReaderComponent($this->config);
-        }
-
-        return $reader;
-    }*/
-
     /**
      * Добавить изображения из файла.
      *
@@ -52,7 +30,7 @@ class ImagesModel
      */
     public function addFile($path, $EOL)
     {
-        $readerSess = new StringReaderSessionComponent($this->config, $this->elementSessionKey);
+        $readerSess = new StringReaderSessionHashComponent($this->config, $this->elementSessionKey);
         $readerSess->addFile($path, $EOL);
     }
 
@@ -66,14 +44,7 @@ class ImagesModel
     {
         $clientImagesParameters = [];
 
-        $readerSess = new StringReaderSessionComponent($this->config, $this->elementSessionKey);
-        /*while (($count-- > 0) && ($imagePath = $readerSess->getNextString()))
-        {
-            if ($info = $this->getImageInfo($imagePath))
-            {
-                $clientImagesParameters[] = $info;
-            }
-        }*/
+        $readerSess = new StringReaderSessionHashComponent($this->config, $this->elementSessionKey);
         while ($count > 0)
         {
             if (($imagePath = $readerSess->getNextString()) !== false)
@@ -93,6 +64,18 @@ class ImagesModel
         return $clientImagesParameters;
     }
 
+    public function showImageByHash($hash)
+    {
+        $readerSess = new StringReaderSessionHashComponent($this->config, $this->elementSessionKey);
+        $imagePath = $readerSess->getStringByHash($hash);
+
+        $info = getimagesize($imagePath);
+
+        print_r($info);
+        exit;
+
+    }
+
     /**
      * Вернуть информацию об изображении (ширина, высота, название) или пустой масссив в случае неудачи.
      *
@@ -110,7 +93,7 @@ class ImagesModel
         {
             $retInfo['width'] = $info[0];
             $retInfo['height'] = $info[1];
-            $retInfo['uid'] = md5($imagePath);
+            #$retInfo['uid'] = md5($imagePath);
             #$retInfo['name'] = urldecode(pathinfo($imagePath, PATHINFO_FILENAME));
             #$retInfo['path'] = ;
         }

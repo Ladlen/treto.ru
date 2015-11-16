@@ -27,4 +27,9 @@ class ImagesController extends ControllerController
         AjaxHelper::sendResult('file added');
     }
 
+    public function actionShowImage()
+    {
+
+    }
+
 }
