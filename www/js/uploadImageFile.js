@@ -1,6 +1,12 @@
 $(function () {
 
+    breakworkImages.showImage = function (image) {
+        var container = "<div><img src='/images/" + image.uid + "'/></div>";
+        $("#content").append(container);
+    }
+
     breakworkImages.retrieve = function (amount) {
+        var that = this;
         var data = {'amount': amount};
         $.ajax({
             url: '/images/retrieve',
@@ -10,7 +16,9 @@ $(function () {
             dataType: 'json',
             success: function (respond) {
                 if (respond.success) {
-
+                    for (var img in respond.result) {
+                        that.showImage(respond.result[img]);
+                    }
                 }
             },
             error: function (jqXHR, textStatus) {
