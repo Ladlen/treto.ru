@@ -86,6 +86,7 @@ class ImagesModel
     {
         $retInfo = [];
 
+        // TODO: сделать что-то с ini_set
         ini_set('display_errors', 0);
         $info = getimagesize($imagePath);
         ini_set('display_errors', 1);
@@ -93,9 +94,8 @@ class ImagesModel
         {
             $retInfo['width'] = $info[0];
             $retInfo['height'] = $info[1];
-            #$retInfo['uid'] = md5($imagePath);
-            #$retInfo['name'] = urldecode(pathinfo($imagePath, PATHINFO_FILENAME));
-            #$retInfo['path'] = ;
+            $retInfo['mime'] = $info['mime'];
+            $retInfo['uid'] = md5($imagePath);
         }
         else
         {
