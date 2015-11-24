@@ -9,6 +9,14 @@ class ImagesController extends ControllerController
 
     public function actionIndex()
     {
+        $args = func_get_args();
+        session_start();
+        $t = 1;
+        #$this->renderPartial('index');
+    }
+
+    public function actionInitHtml()
+    {
         self::addScript('/js/brickworkImages.js', self::JS_POS_END);
         $this->renderPartial('index');
     }
@@ -29,7 +37,13 @@ class ImagesController extends ControllerController
 
     public function actionShowImage()
     {
-
+        header('Content-Type: image/png');
+        $im = @imagecreatetruecolor(120, 20)
+        or die('Невозможно инициализировать GD поток');
+        $text_color = imagecolorallocate($im, 233, 14, 91);
+        imagestring($im, 1, 5, 5,  'Простая Текстовая Строка', $text_color);
+        imagepng($im);
+        imagedestroy($im);
     }
 
 }

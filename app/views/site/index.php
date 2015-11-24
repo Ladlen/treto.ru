@@ -3,5 +3,5 @@
     <input type="submit" value="ОТПРАВИТЬ" />
 </form>
 
-<?php (new ImagesController($this->config))->actionIndex() ?>
+<?php (new ImagesController($this->config))->actionInitHtml() ?>
 
