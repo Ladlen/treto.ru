@@ -2,8 +2,8 @@
 
     var breakworkImages =
     {
-        "imageHeight" : <?php echo $this->config['brickworkImages']['dimensions']['height'] ?>,  // px
-        "imageDistance" : <?php echo $this->config['brickworkImages']['dimensions']['margin'] ?>,  // px - расстояние по краям изображений
+        "imageHeight" : <?php echo $this->config['brickworkImages']['dimensions']['height'] ?>,
+        "imageDistance" : <?php echo $this->config['brickworkImages']['dimensions']['margin'] ?>,
         "bundleCount" :  <?php echo $this->config['brickworkImages']['bundleCount'] ?>
     }
 
